@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">miller4-CountBook</string>
+    <string name="button_add">Add New</string>
+    <string name="name_tag">Name</string>
+    <string name="date_tag">Date</string>
+    <string name="initial_value_tag">Initial Value</string>
+    <string name="current_value_tag">Current Value</string>
+    <string name="comment_tag">Comment</string>
+    <string name="button_create">Create</string>
+</resources>
