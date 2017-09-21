@@ -22,6 +22,7 @@ public class AddNewCounterActivity extends AppCompatActivity {
         Integer initialValue = Integer.parseInt(editText.getText().toString());
         editText = (EditText) findViewById(R.id.NewCommentField);
         String comment = editText.getText().toString();
+
         CounterArraySingleton.getInstance().getCounters().add(new Counter(name, initialValue, comment));
     }
 

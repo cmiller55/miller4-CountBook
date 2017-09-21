@@ -7,4 +7,6 @@
     <string name="current_value_tag">Current Value</string>
     <string name="comment_tag">Comment</string>
     <string name="button_create">Create</string>
+    <string name="button_increment">+</string>
+    <string name="button_decrement">-</string>
 </resources>
