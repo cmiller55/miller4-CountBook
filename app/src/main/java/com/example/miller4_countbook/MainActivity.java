@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import com.google.gson.Gson;
+
 
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
 
@@ -32,7 +34,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         ArrayAdapter<Counter> counterAdapter = new ArrayAdapter<Counter>(this, android.R.layout.simple_list_item_1, counters);
 
         listview.setAdapter(counterAdapter);
-
     }
 
 

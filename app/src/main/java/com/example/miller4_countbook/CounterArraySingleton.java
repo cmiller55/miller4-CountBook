@@ -22,5 +22,10 @@ public final class CounterArraySingleton {
     public ArrayList<Counter> getCounters() {
         return counters;
     }
+
+    public void setCounters(ArrayList<Counter> counters){
+        this.counters = counters;
+    }
+    
 }
 

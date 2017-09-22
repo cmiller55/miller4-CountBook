@@ -1,5 +1,6 @@
 package com.example.miller4_countbook;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +23,10 @@ public class AddNewCounterActivity extends AppCompatActivity {
         Integer initialValue = Integer.parseInt(editText.getText().toString());
         editText = (EditText) findViewById(R.id.NewCommentField);
         String comment = editText.getText().toString();
-
         CounterArraySingleton.getInstance().getCounters().add(new Counter(name, initialValue, comment));
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }
