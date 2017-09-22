@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public final class CounterArraySingleton {
     private static final CounterArraySingleton SELF = new CounterArraySingleton();
-    private ArrayList<Counter> counters = new ArrayList<Counter>();
+    private ArrayList<Counter> counters;
 
     private CounterArraySingleton() {}
 
@@ -23,8 +23,8 @@ public final class CounterArraySingleton {
         return counters;
     }
 
-    public void setCounters(ArrayList<Counter> counters){
-        this.counters = counters;
+    public void setCounters(ArrayList<Counter> counterList){
+        this.counters = counterList;
     }
     
 }
