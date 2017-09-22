@@ -17,7 +17,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+// activity for viewing and editing details of a counter
 public class ListItemDetailActivity extends AppCompatActivity {
 
     private Counter selectedCounter;
@@ -28,14 +28,17 @@ public class ListItemDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item_detail);
 
+        // used the indentifiers stored to retrive the selected counter from the singleton
         Intent intent = getIntent();
         Integer position = intent.getIntExtra("position", 0);
         selectedCounter = CounterArraySingleton.getInstance().getCounters().get(position);
 
+        // initialize all the data fields with the current attributes of the counter
         updateAllFields();
 
     }
 
+    // simple holder method intended to save lines, though end code design made it underused
     public void updateAllFields(){
         updateNameField();
         updateDateField();
@@ -49,6 +52,7 @@ public class ListItemDetailActivity extends AppCompatActivity {
         editText.setText(selectedCounter.getName());
     }
 
+    // extra condition check for the date since the date is only modified when the current value changes
     public void updateDateField() {
         TextView editText = (TextView) findViewById(R.id.DateField);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,22 +75,26 @@ public class ListItemDetailActivity extends AppCompatActivity {
         editText.setText(selectedCounter.getComment());
     }
 
+    // increment method is linked to increment button in xml file
     public void incrementCounter(View v) {
         selectedCounter.setCurrentValue(selectedCounter.getCurrentValue() + 1);
         selectedCounter.setDate(new Date());
-        updateDateField();
+        //updateDateField();
         updateCurrentValueField();
     }
 
+    // decrement method is linked to increment button in xml file
     public void decrementCounter(View v) {
         if(selectedCounter.getCurrentValue()>0) {
             selectedCounter.setCurrentValue(selectedCounter.getCurrentValue() - 1);
             selectedCounter.setDate(new Date());
-            updateDateField();
+            //updateDateField();
             updateCurrentValueField();
         }
     }
 
+    // method for updating the counter attributes using the values entered into the fields - wanted
+    // to use updateAllFields but current value condition check on date prevented it
     public void updateCounter(View v) {
         EditText editText = (EditText) findViewById(R.id.EditCurrentValueField);
         if(!(editText.getText().toString().equals(selectedCounter.getCurrentValue().toString()))){
@@ -100,24 +108,28 @@ public class ListItemDetailActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.EditCommentField);
         selectedCounter.setComment(editText.getText().toString());
 
+        // upon finishing updating the counter, save to the file and return to main activity
         saveInFile();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    // method to reset the counters current value - another condition check for modifying the date
     public void resetCounter(View v) {
         if(!(selectedCounter.getCurrentValue().equals(selectedCounter.getInitialValue()))){
             selectedCounter.setCurrentValue(selectedCounter.getInitialValue());
             selectedCounter.setDate(new Date());
         }
 
+        // save the counters and restart the main activity
         saveInFile();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    // simple delete method - remove counter from the singleton, save and return to main activity
     public void deleteCounter(View v) {
         CounterArraySingleton.getInstance().getCounters().remove(selectedCounter);
 
@@ -127,6 +139,11 @@ public class ListItemDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // the same lab 3 save function from main activity but with a minor alteration, the counters are pulled from the
+    // singleton as they are not already present. Though having a similar save function three times
+    // in the app is redundant, issues with openFileOutput prevented any attempts at fixing this
+    // redundancy - the load function did not need to be reproduced as load is always called upon
+    // returning to the main activity
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,

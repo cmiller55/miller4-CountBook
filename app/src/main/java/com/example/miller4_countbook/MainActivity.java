@@ -26,8 +26,9 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
+// primary activity that displays the list of counters
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
+
 
     private ArrayList<Counter> counters;
     private static final String FILENAME = "file.sav";
@@ -38,40 +39,43 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-
-        //counters = CounterArraySingleton.getInstance().getCounters();
+        // load saved counters from file
         loadFromFile();
+
+        // store the counter array in the singleton for easy access from all activities
         CounterArraySingleton.getInstance().setCounters(counters);
+
+        // setup and display the counter list
         ListView listview = (ListView) findViewById(R.id.CounterList);
         listview.setOnItemClickListener(this);
-
         ArrayAdapter<Counter> counterAdapter = new ArrayAdapter<Counter>(this, android.R.layout.simple_list_item_1, counters);
-
         listview.setAdapter(counterAdapter);
     }
 
+    // save counter list to file whenever activity is paused, stopped or destroyed
     @Override
     protected void onPause() {
         super.onPause();
         saveInFile();
     }
 
+    // when item is clicked, store identifiers for the selected counter and start editing activity
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-//        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
         Intent intent = new Intent();
         intent.setClass(this, ListItemDetailActivity.class);
         intent.putExtra("position", position);
-        // Or / And
         intent.putExtra("id", id);
         startActivity(intent);
     }
 
+    // code for starting adding activity, linked to add button in xml
     public void addCounter(View view) {
         Intent intent = new Intent(this, AddNewCounterActivity.class);
         startActivity(intent);
 
     }
 
+    // save method used in lab 3 - used with little modification
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
@@ -86,11 +90,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
             throw new RuntimeException();
         } catch (IOException e) {
-           
+
             throw new RuntimeException();
         }
     }
 
+    // load method from lab 3 - used with little modification
     private void loadFromFile() {
 
         try {
@@ -102,10 +107,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
 
         } catch (FileNotFoundException e) {
-
             counters = new ArrayList<Counter>();
         } catch (IOException e) {
-
             throw new RuntimeException(e);
         }
     }

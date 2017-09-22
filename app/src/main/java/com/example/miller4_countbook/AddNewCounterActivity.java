@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+// activity for adding new counters to the list
 public class AddNewCounterActivity extends AppCompatActivity {
 
     private static final String FILENAME = "file.sav";
@@ -23,24 +24,43 @@ public class AddNewCounterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_counter);
 
-
     }
 
+    // create a new counter from the information  entered into the fields - if a required field is
+    // left empty, a default value is given which the user can edit in the edit menu
     public void createCounter(View v) {
+        String name;
+        Integer initialValue;
+        String comment;
         EditText editText = (EditText) findViewById(R.id.NewNameField);
-        String name = editText.getText().toString();
+        if(isFieldEmpty(editText)){
+            name = "NoNameGiven";
+        } else {
+            name = editText.getText().toString();
+        }
         editText = (EditText) findViewById(R.id.NewValueField);
-        Integer initialValue = Integer.parseInt(editText.getText().toString());
+        if(isFieldEmpty(editText)) {
+            initialValue = 0;
+        } else {
+            initialValue = Integer.parseInt(editText.getText().toString());
+        }
+        // no field check for comment as it is an optional field
         editText = (EditText) findViewById(R.id.NewCommentField);
-        String comment = editText.getText().toString();
+        comment = editText.getText().toString();
+
+        // create the new counter and insert it into the singleton, then save and return to main
         CounterArraySingleton.getInstance().getCounters().add(new Counter(name, initialValue, comment));
-
         saveInFile();
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    // simple check for empty field - removes whitespace and checks for actual characters
+    private boolean isFieldEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
+    }
+
+    // lab 3 save function with the same modification as in ListItemDetailActivity
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
